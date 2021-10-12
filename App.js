@@ -1,16 +1,8 @@
-import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
+import Item from './components/Item'
 
 import Constants from 'expo-constants'
-
-const Item = (props) => {
-  return (
-    <View>
-      <Text>{props.text}</Text>
-    </View>
-  )
-}
 
 export default function App() {
   const AppData = [
