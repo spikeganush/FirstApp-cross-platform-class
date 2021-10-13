@@ -1,24 +1,95 @@
-import React from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import Item from './components/Item'
 
 import Constants from 'expo-constants'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function App() {
-  const AppData = [
-    { id: '1', name: 'Apple' },
-    { id: '2', name: 'Pineapple' },
-    { id: '3', name: 'Tomato' },
-    { id: '4', name: 'Banana' },
-    { id: '5', name: 'Blueberry' },
-  ]
+  const [data, setData] = useState('')
+  const [validInput, setValidInput] = useState(false)
+  const [input, setInput] = useState()
 
-  const Renderer = ({ item }) => <Item text={item.name} />
+  const onTextChange = (value) => {
+    // Disable the button if the input text is less than 2 characters
+    setValidInput(value.length >= 3)
+    setInput(value)
+  }
+
+  const addData = () => {
+    const id = new Date().getTime().toString()
+    const item = { id: id, name: input }
+    setData([...data, item])
+    setInput(null)
+  }
+
+  const deleteData = (id) => {
+    let items = [...data]
+    let newData = items.filter((item) => {
+      if (item.id !== id) {
+        return item
+      }
+    })
+    setData(newData)
+  }
+
+  const storeData = async () => {
+    try {
+      const stringified = JSON.stringify(data)
+      await AsyncStorage.setItem('listData', stringified)
+    } catch (e) {
+      consol.log(e)
+    }
+  }
+
+  const getData = async () => {
+    try {
+      const stringified = await AsyncStorage.getItem('listData')
+      setData(stringified !== null ? JSON.parse(stringified) : [])
+    } catch (e) {
+      consol.log(e)
+    }
+  }
+
+  useEffect(() => {
+    if (!data) {
+      getData()
+    } else {
+      storeData()
+    }
+  }, [data])
+
+  const Renderer = ({ item }) => (
+    <Item text={item.name} delete={deleteData} id={item.id} />
+  )
+
   return (
     <View style={styles.container}>
-      <Text>First flatlist</Text>
+      <Text style={styles.title}>First flatlist</Text>
+      <View style={styles.header}>
+        <TextInput
+          style={styles.input}
+          value={input}
+          onChangeText={onTextChange}
+          placeholder="Min 3 characters"
+        />
+        <TouchableOpacity
+          style={validInput ? styles.button : styles.buttonDisabled}
+          disabled={validInput ? false : true}
+          onPress={addData}
+        >
+          <Text style={styles.btnText}>Add to the list</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
-        data={AppData}
+        data={data}
         renderItem={Renderer}
         keyExtractor={(item) => item.id}
       />
@@ -30,8 +101,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: Constants.statusBarHeight,
-    backgroundColor: '#fff',
+    backgroundColor: '#8ed1fa',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginHorizontal: 10,
+    marginBottom: 10,
+  },
+  input: {
+    backgroundColor: '#FFFFFF',
+    fontSize: 20,
+    borderColor: '#DDDDDD',
+    borderWidth: 1,
+    padding: 5,
+    flex: 1,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+  },
+  button: {
+    backgroundColor: '#000000',
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  buttonDisabled: {
+    backgroundColor: '#9e9d9d',
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  btnText: {
+    color: 'white',
+    padding: 10,
   },
 })
