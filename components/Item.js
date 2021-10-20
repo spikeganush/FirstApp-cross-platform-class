@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   deleteBtn: {
-    backgroundColor: 'red',
+    backgroundColor: '#192494',
     borderRadius: 10,
     borderColor: 'black',
     borderWidth: 0.5,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   doneBtn: {
-    backgroundColor: 'green',
+    backgroundColor: '#5D67C7',
     borderRadius: 10,
     borderColor: 'black',
     borderWidth: 0.5,
