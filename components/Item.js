@@ -5,12 +5,21 @@ const Item = (props) => {
   return (
     <View style={styles.container}>
       <Text>{props.text}</Text>
-      <TouchableOpacity
-        style={styles.deleteBtn}
-        onPress={() => props.delete(props.id)}
-      >
-        <Text style={styles.deleteText}>X</Text>
-      </TouchableOpacity>
+
+      <View style={styles.buttonArea}>
+        <TouchableOpacity
+          style={styles.doneBtn}
+          onPress={() => props.status(props.id)}
+        >
+          <Text style={styles.doneText}>✓</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.deleteBtn}
+          onPress={() => props.delete(props.id)}
+        >
+          <Text style={styles.deleteText}>X</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -30,18 +39,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  buttonArea: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
   deleteBtn: {
     backgroundColor: 'red',
     borderRadius: 10,
     borderColor: 'black',
     borderWidth: 0.5,
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
   deleteText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  doneBtn: {
+    backgroundColor: 'green',
+    borderRadius: 10,
+    borderColor: 'black',
+    borderWidth: 0.5,
+    width: 40,
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  doneText: {
     color: 'white',
     fontWeight: 'bold',
   },

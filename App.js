@@ -58,6 +58,15 @@ export default function App() {
     }
   }
 
+  const changeStatus = (id) => {
+    let items = [...data]
+    items.forEach((item) => {
+      if (item.id === id) {
+        item.status = true
+      }
+    })
+  }
+
   useEffect(() => {
     if (!data) {
       getData()
@@ -67,7 +76,12 @@ export default function App() {
   }, [data])
 
   const Renderer = ({ item }) => (
-    <Item text={item.name} delete={deleteData} id={item.id} />
+    <Item
+      text={item.name}
+      delete={deleteData}
+      id={item.id}
+      status={changeStatus}
+    />
   )
 
   return (
