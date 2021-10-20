@@ -62,9 +62,16 @@ export default function App() {
     let items = [...data]
     items.forEach((item) => {
       if (item.id === id) {
-        item.status = true
+        if (item.status === true) {
+          item.status = false
+        } else {
+          item.status = true
+        }
       }
     })
+    console.log(items)
+
+    addData(items)
   }
 
   useEffect(() => {
@@ -80,7 +87,8 @@ export default function App() {
       text={item.name}
       delete={deleteData}
       id={item.id}
-      status={changeStatus}
+      status={item.status}
+      done={changeStatus}
     />
   )
 

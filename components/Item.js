@@ -1,15 +1,17 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 
 const Item = (props) => {
   return (
     <View style={styles.container}>
-      <Text>{props.text}</Text>
+      <Text style={props.status ? styles.textDone : styles.text}>
+        {props.text}
+      </Text>
 
       <View style={styles.buttonArea}>
         <TouchableOpacity
           style={styles.doneBtn}
-          onPress={() => props.status(props.id)}
+          onPress={() => props.done(props.id)}
         >
           <Text style={styles.doneText}>✓</Text>
         </TouchableOpacity>
@@ -38,6 +40,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  text: {
+    flex: 1,
+    color: 'black',
+  },
+  textDone: {
+    flex: 1,
+    textDecorationLine: 'line-through',
+    color: 'gray',
   },
   buttonArea: {
     display: 'flex',
